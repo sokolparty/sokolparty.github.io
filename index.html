@@ -5,11 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Firebase Storage</title>
     <script type="module">
-        // Importuj funkcje Firebase
         import { initializeApp } from "firebase/app";
         import { getStorage, ref, uploadBytes, listAll, getDownloadURL } from "firebase/storage";
 
-        // Konfiguracja Firebase
         const firebaseConfig = {
             apiKey: "AIzaSyA_P1R1-PGfykAVM_Y9B6Ajz4ckkz1vz9Q",
             authDomain: "sokolparty420.firebaseapp.com",
@@ -20,11 +18,9 @@
             measurementId: "G-18TK7X35TQ"
         };
 
-        // Inicjalizacja Firebase
         const app = initializeApp(firebaseConfig);
         const storage = getStorage(app);
 
-        // Funkcja do przesyłania zdjęć
         async function uploadImage() {
             const file = document.getElementById('fileInput').files[0];
             if (!file) {
@@ -42,7 +38,6 @@
             }
         }
 
-        // Funkcja do wyświetlania zdjęć
         async function displayImages() {
             const gallery = document.getElementById('gallery');
             gallery.innerHTML = '';
@@ -63,7 +58,6 @@
             }
         }
 
-        // Wywołaj funkcję wyświetlania zdjęć po załadowaniu strony
         window.onload = displayImages;
     </script>
 </head>
