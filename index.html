@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Przesyłanie zdjęć</title>
-    <link rel="stylesheet" href="styles.css"> <!-- Dodana linijka do ładowania stylów -->
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
     <h1>Przesyłaj swoje zdjęcia</h1>
@@ -12,15 +12,14 @@
         <input type="file" id="file-input" accept="image/*" required>
         <button type="submit">Prześlij zdjęcie</button>
     </form>
-    <div id="message"></div> <!-- Miejsce na komunikaty -->
+    <div id="message"></div>
     
-    <div id="images-list" style="display: flex; flex-wrap: wrap;"></div> <!-- Miejsce na zdjęcia -->
+    <div id="images-list" style="display: flex; flex-wrap: wrap;"></div>
 
-    <script src="https://www.gstatic.com/firebasejs/9.x.x/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.x.x/firebase-storage.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.x.x/firebase-analytics.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.10.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.10.0/firebase-storage.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.10.0/firebase-analytics.js"></script>
     <script>
-        // Twoje dane konfiguracyjne Firebase
         const firebaseConfig = {
             apiKey: "AIzaSyA_P1R1-PGfykAVM_Y9B6Ajz4ckkz1vz9Q",
             authDomain: "sokolparty420.firebaseapp.com",
@@ -31,10 +30,9 @@
             measurementId: "G-BRWXNL09M4"
         };
 
-        // Inicjalizacja Firebase
         const app = initializeApp(firebaseConfig);
         const analytics = getAnalytics(app);
-        const storage = firebase.storage();
+        const storage = getStorage(app); // Dodaj tę linię
     </script>
     <script src="script.js"></script>
 </body>
