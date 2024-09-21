@@ -3,82 +3,19 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Przesyłanie zdjęć</title>
-    <link rel="stylesheet" href="styles.css">
+    <title>Upload zdjęć</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <h1>Przesyłaj swoje zdjęcia</h1>
-    <form id="upload-form" enctype="multipart/form-data">
-        <input type="file" id="file-input" accept="image/*" required>
-        <button type="submit">Prześlij zdjęcie</button>
-    </form>
-    <div id="message"></div>
+    <input type="file" id="fileInput" />
+    <button onclick="uploadFile()">Prześlij zdjęcie</button>
     
-    <div id="images-list" style="display: flex; flex-wrap: wrap;"></div>
-
-    <script src="https://www.gstatic.com/firebasejs/9.10.0/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.10.0/firebase-storage.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.10.0/firebase-analytics.js"></script>
-    <script>
-        // Twoje dane konfiguracyjne Firebase
-        const firebaseConfig = {
-            apiKey: "AIzaSyA_P1R1-PGfykAVM_Y9B6Ajz4ckkz1vz9Q",
-            authDomain: "sokolparty420.firebaseapp.com",
-            projectId: "sokolparty420",
-            storageBucket: "sokolparty420.appspot.com",
-            messagingSenderId: "361570196780",
-            appId: "1:361570196780:web:ed13c0abc51d865355e089",
-            measurementId: "G-BRWXNL09M4"
-        };
-
-        // Inicjalizacja Firebase
-        const app = firebase.initializeApp(firebaseConfig);
-        const storage = firebase.storage(); // Uzyskaj referencję do Storage
-
-        document.getElementById('upload-form').addEventListener('submit', function(event) {
-            event.preventDefault();
-            const fileInput = document.getElementById('file-input');
-            const file = fileInput.files[0];
-
-            if (file) {
-                const storageRef = storage.ref('images/' + file.name);
-                
-                // Przesyłanie pliku
-                storageRef.put(file).then(() => {
-                    document.getElementById('message').textContent = 'Zdjęcie przesłane pomyślnie!';
-                    displayImages();
-                }).catch((error) => {
-                    console.error('Błąd podczas przesyłania zdjęcia:', error);
-                    document.getElementById('message').textContent = 'Błąd podczas przesyłania zdjęcia: ' + error.message;
-                });
-            }
-        });
-
-        // Funkcja do wyświetlania zdjęć
-        function displayImages() {
-            const imagesList = document.getElementById('images-list');
-            imagesList.innerHTML = '';
-
-            const storageRef = storage.ref('images/');
-            storageRef.listAll().then((result) => {
-                result.items.forEach((imageRef) => {
-                    imageRef.getDownloadURL().then((url) => {
-                        const imgElement = document.createElement('img');
-                        imgElement.src = url;
-                        imgElement.style.width = '200px';
-                        imgElement.style.margin = '10px';
-                        imagesList.appendChild(imgElement);
-                    });
-                });
-            }).catch((error) => {
-                console.error('Błąd podczas pobierania zdjęć:', error);
-            });
-        }
-
-        // Wywołaj displayImages() przy ładowaniu strony
-        window.onload = function() {
-            displayImages();
-        };
-    </script>
+    <h2>Przesłane zdjęcia</h2>
+    <div id="gallery"></div>
+    
+    <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-storage.js"></script>
+    <script src="app.js"></script>
 </body>
 </html>
