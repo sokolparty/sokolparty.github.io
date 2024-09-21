@@ -1,46 +1,64 @@
-import { getStorage } from "firebase/storage"; // Dodaj import, jeśli używasz modułów
+// Import the functions you need from the SDKs you need
+import { initializeApp } from "firebase/app";
+import { getAnalytics } from "firebase/analytics";
+import { getStorage, ref, uploadBytes, listAll, getDownloadURL } from "firebase/storage";
 
-document.getElementById('upload-form').addEventListener('submit', function(event) {
-    event.preventDefault();
-    const fileInput = document.getElementById('file-input');
-    const file = fileInput.files[0];
+// Your web app's Firebase configuration
+const firebaseConfig = {
+  apiKey: "AIzaSyA_P1R1-PGfykAVM_Y9B6Ajz4ckkz1vz9Q",
+  authDomain: "sokolparty420.firebaseapp.com",
+  projectId: "sokolparty420",
+  storageBucket: "sokolparty420.appspot.com",
+  messagingSenderId: "361570196780",
+  appId: "1:361570196780:web:ed13c0abc51d865355e089",
+  measurementId: "G-BRWXNL09M4"
+};
 
-    if (file) {
-        const storageRef = storage.ref('images/' + file.name);
-        
-        // Przesyłanie pliku
-        storageRef.put(file).then(() => {
-            document.getElementById('message').textContent = 'Zdjęcie przesłane pomyślnie!';
-            displayImages(); // Wywołaj funkcję wyświetlającą zdjęcia
-        }).catch((error) => {
-            console.error('Błąd podczas przesyłania zdjęcia:', error);
-            document.getElementById('message').textContent = 'Błąd podczas przesyłania zdjęcia: ' + error.message;
-        });
-    }
-});
+// Initialize Firebase
+const app = initializeApp(firebaseConfig);
+const analytics = getAnalytics(app);
 
-// Funkcja do wyświetlania zdjęć
-function displayImages() {
-    const imagesList = document.getElementById('images-list');
-    imagesList.innerHTML = ''; // Wyczyść listę przed dodaniem nowych zdjęć
+// Initialize Firebase Storage
+const storage = getStorage(app);
 
-    const storageRef = storage.ref('images/');
-    storageRef.listAll().then((result) => {
-        result.items.forEach((imageRef) => {
-            imageRef.getDownloadURL().then((url) => {
-                const imgElement = document.createElement('img');
-                imgElement.src = url;
-                imgElement.style.width = '200px'; // Możesz dostosować szerokość
-                imgElement.style.margin = '10px'; // Margines między obrazkami
-                imagesList.appendChild(imgElement); // Dodaj obrazek do listy
-            });
-        });
-    }).catch((error) => {
-        console.error('Błąd podczas pobierania zdjęć:', error);
-    });
+// Function to upload a file
+function uploadFile(file) {
+  const storageRef = ref(storage, 'images/' + file.name);
+  
+  uploadBytes(storageRef, file).then((snapshot) => {
+    console.log('Uploaded a blob or file!', snapshot);
+    displayImages(); // Refresh the displayed images after upload
+  }).catch((error) => {
+    console.error('Upload failed:', error);
+  });
 }
 
-// Wywołaj displayImages() przy ładowaniu strony
-window.onload = function() {
-    displayImages();
-};
+// Function to display all uploaded images
+function displayImages() {
+  const gallery = document.getElementById('gallery');
+  gallery.innerHTML = ''; // Clear the gallery before displaying images
+
+  const imagesRef = ref(storage, 'images/');
+
+  listAll(imagesRef).then((result) => {
+    result.items.forEach((imageRef) => {
+      getDownloadURL(imageRef).then((url) => {
+        const img = document.createElement('img');
+        img.src = url;
+        img.width = 200;
+        gallery.appendChild(img);
+      });
+    });
+  }).catch((error) => {
+    console.error('Error displaying images:', error);
+  });
+}
+
+// Example of usage: Call the uploadFile function with a selected file
+document.getElementById('fileInput').addEventListener('change', (event) => {
+  const file = event.target.files[0];
+  uploadFile(file);
+});
+
+// Call displayImages when the page loads to show existing images
+window.onload = displayImages;
