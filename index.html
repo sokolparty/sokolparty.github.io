@@ -43,26 +43,25 @@
         }
 
         // Funkcja do wyświetlania zdjęć
-async function displayImages() {
-    const gallery = document.getElementById('gallery');
-    gallery.innerHTML = '';
+        async function displayImages() {
+            const gallery = document.getElementById('gallery');
+            gallery.innerHTML = '';
 
-    const listRef = ref(storage, 'uploads/');
-    try {
-        const res = await listAll(listRef);
-        res.items.forEach(async (itemRef) => {
-            const url = await getDownloadURL(itemRef);
-            const img = document.createElement('img');
-            img.src = url;
-            img.style.width = '200px';
-            img.style.margin = '10px';
-            gallery.appendChild(img);
-        });
-    } catch (error) {
-        console.error('Błąd podczas wyświetlania zdjęć:', error);
-    }
-}
-
+            const listRef = ref(storage, 'uploads/');
+            try {
+                const res = await listAll(listRef);
+                res.items.forEach(async (itemRef) => {
+                    const url = await getDownloadURL(itemRef);
+                    const img = document.createElement('img');
+                    img.src = url;
+                    img.style.width = '200px';
+                    img.style.margin = '10px';
+                    gallery.appendChild(img);
+                });
+            } catch (error) {
+                console.error('Błąd podczas wyświetlania zdjęć:', error);
+            }
+        }
 
         // Wywołaj funkcję wyświetlania zdjęć po załadowaniu strony
         window.onload = displayImages;
