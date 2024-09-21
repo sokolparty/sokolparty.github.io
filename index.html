@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Przesyłanie zdjęć</title>
+    <link rel="stylesheet" href="styles.css"> <!-- Opcjonalnie: Możesz dodać własne style -->
 </head>
 <body>
     <h1>Przesyłaj swoje zdjęcia</h1>
@@ -11,6 +12,28 @@
         <input type="file" id="file-input" accept="image/*" required>
         <button type="submit">Prześlij zdjęcie</button>
     </form>
+    <div id="message"></div> <!-- Miejsce na komunikaty -->
+    
+    <script src="https://www.gstatic.com/firebasejs/9.x.x/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.x.x/firebase-storage.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.x.x/firebase-analytics.js"></script>
+    <script>
+        // Twoje dane konfiguracyjne Firebase
+        const firebaseConfig = {
+            apiKey: "AIzaSyD2FlPNLESdBqw7KDHoXpc6mKDMqrGhxDA",
+            authDomain: "sokolparty69.firebaseapp.com",
+            projectId: "sokolparty69",
+            storageBucket: "sokolparty69.appspot.com",
+            messagingSenderId: "822987042131",
+            appId: "1:822987042131:web:32851ca821f35324fdc5a6",
+            measurementId: "G-41Z3JM0Z9B"
+        };
+
+        // Inicjalizacja Firebase
+        const app = initializeApp(firebaseConfig);
+        const analytics = getAnalytics(app);
+        const storage = firebase.storage();
+    </script>
     <script src="script.js"></script>
 </body>
 </html>
