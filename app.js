@@ -1,9 +1,4 @@
-// Import the functions you need from the SDKs you need
-import { initializeApp } from "firebase/app";
-import { getAnalytics } from "firebase/analytics";
-import { getStorage, ref, uploadBytes, listAll, getDownloadURL } from "firebase/storage";
-
-// Your web app's Firebase configuration
+// Initialize Firebase
 const firebaseConfig = {
   apiKey: "AIzaSyA_P1R1-PGfykAVM_Y9B6Ajz4ckkz1vz9Q",
   authDomain: "sokolparty420.firebaseapp.com",
@@ -15,17 +10,16 @@ const firebaseConfig = {
 };
 
 // Initialize Firebase
-const app = initializeApp(firebaseConfig);
-const analytics = getAnalytics(app);
-
-// Initialize Firebase Storage
-const storage = getStorage(app);
+const app = firebase.initializeApp(firebaseConfig);
+const analytics = firebase.analytics();
+const storage = firebase.storage();
 
 // Function to upload a file
-function uploadFile(file) {
-  const storageRef = ref(storage, 'images/' + file.name);
+function uploadFile() {
+  const file = document.getElementById('fileInput').files[0];
+  const storageRef = storage.ref('images/' + file.name);
   
-  uploadBytes(storageRef, file).then((snapshot) => {
+  storageRef.put(file).then((snapshot) => {
     console.log('Uploaded a blob or file!', snapshot);
     displayImages(); // Refresh the displayed images after upload
   }).catch((error) => {
@@ -38,11 +32,11 @@ function displayImages() {
   const gallery = document.getElementById('gallery');
   gallery.innerHTML = ''; // Clear the gallery before displaying images
 
-  const imagesRef = ref(storage, 'images/');
+  const imagesRef = storage.ref('images/');
 
-  listAll(imagesRef).then((result) => {
+  imagesRef.listAll().then((result) => {
     result.items.forEach((imageRef) => {
-      getDownloadURL(imageRef).then((url) => {
+      imageRef.getDownloadURL().then((url) => {
         const img = document.createElement('img');
         img.src = url;
         img.width = 200;
