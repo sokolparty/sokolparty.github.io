@@ -1,12 +1,18 @@
 // Konfiguracja Firebase
+import { app } from `./firebaseConfig`;
 const firebaseConfig = {
-    apiKey: "AIzaSyA_P1R1-PGfykAVM_Y9B6Ajz4ckkz1vz9Q",
-    authDomain: "sokolparty420.firebaseapp.com",
-    projectId: "sokolparty420",
-    storageBucket: "sokolparty420.appspot.com",
-    messagingSenderId: "361570196780",
-    appId: "1:361570196780:web:ed13c0abc51d865355e089",
-    measurementId: "G-BRWXNL09M4"
+  apiKey: "AIzaSyA_P1R1-PGfykAVM_Y9B6Ajz4ckkz1vz9Q",
+  authDomain: "sokolparty420.firebaseapp.com",
+  projectId: "sokolparty420",
+  storageBucket: "sokolparty420.appspot.com",
+  messagingSenderId: "361570196780",
+  appId: "1:361570196780:web:e1e1e419d06d475355e089",
+  measurementId: "G-18TK7X35TQ"
+};
+
+// Initialize Firebase
+const app = initializeApp(firebaseConfig);
+const analytics = getAnalytics(app);
 };
 
 // Inicjalizacja Firebase
