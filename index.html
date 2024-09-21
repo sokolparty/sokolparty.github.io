@@ -23,19 +23,9 @@
 
         async function uploadImage() {
             const file = document.getElementById('fileInput').files[0];
-            if (!file) {
-                alert('Proszę wybrać plik!');
-                return;
-            }
             const storageRef = ref(storage, 'uploads/' + file.name);
-            try {
-                await uploadBytes(storageRef, file);
-                alert('Plik przesłany pomyślnie!');
-                displayImages(); // Wywołaj funkcję do wyświetlania zdjęć
-            } catch (error) {
-                console.error('Błąd przesyłania:', error);
-                alert('Błąd podczas przesyłania pliku: ' + error.message);
-            }
+            await uploadBytes(storageRef, file);
+            displayImages();
         }
 
         async function displayImages() {
@@ -43,26 +33,20 @@
             gallery.innerHTML = '';
 
             const listRef = ref(storage, 'uploads/');
-            try {
-                const res = await listAll(listRef);
-                res.items.forEach(async (itemRef) => {
-                    const url = await getDownloadURL(itemRef);
-                    const img = document.createElement('img');
-                    img.src = url;
-                    img.style.width = '200px';
-                    img.style.margin = '10px';
-                    gallery.appendChild(img);
-                });
-            } catch (error) {
-                console.error('Błąd podczas wyświetlania zdjęć:', error);
-            }
+            const res = await listAll(listRef);
+            res.items.forEach(async (itemRef) => {
+                const url = await getDownloadURL(itemRef);
+                const img = document.createElement('img');
+                img.src = url;
+                img.style.width = '200px';
+                img.style.margin = '10px';
+                gallery.appendChild(img);
+            });
         }
-
-        window.onload = displayImages;
     </script>
 </head>
 <body>
-    <h1>SOKOOOOL PARTY</h1>
+    <h1>Przesyłanie zdjęć do Firebase Storage</h1>
     <input type="file" id="fileInput">
     <button onclick="uploadImage()">Prześlij zdjęcie</button>
     <div id="gallery"></div>
