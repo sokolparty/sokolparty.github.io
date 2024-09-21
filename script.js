@@ -1,3 +1,5 @@
+import { getStorage } from "firebase/storage"; // Dodaj import, jeśli używasz modułów
+
 document.getElementById('upload-form').addEventListener('submit', function(event) {
     event.preventDefault();
     const fileInput = document.getElementById('file-input');
