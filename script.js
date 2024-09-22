@@ -12,17 +12,26 @@ const firebaseConfig = {
 firebase.initializeApp(firebaseConfig);
 const db = firebase.firestore();
 
-// Tworzenie planszy Bingo
 const boardSize = 3; // Zmiana na 3x3
+const values = [
+    "1", "2", "3", 
+    "4", "5", "6", 
+    "7", "8", "9"
+];
+
 const bingoBoard = document.getElementById('bingo-board');
 
+// Tworzenie planszy Bingo
 for (let i = 0; i < boardSize * boardSize; i++) {
     const square = document.createElement('div');
     square.className = 'square';
-    square.textContent = i + 1; // Wypełnienie liczbami 1-25
+    square.textContent = values[i]; // Wypełnienie kwadratów z wartościami z tablicy
     square.addEventListener('click', () => markSquare(i));
     bingoBoard.appendChild(square);
 }
+
+// Pozostała część kodu (markSquare, resetBingo itp.)
+
 
 // Zaznaczanie pola w Firestore
 function markSquare(index) {
