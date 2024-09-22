@@ -7,6 +7,20 @@ const values = [
 
 const bingoBoard = document.getElementById('bingo-board');
 
+// Inicjalizacja Firebase
+const firebaseConfig = {
+    apiKey: "AIzaSyCFoWA5SvQ2vqdPU6X5vvCO4nz9CnHUyIk",
+    authDomain: "sokolparty669.firebaseapp.com",
+    projectId: "sokolparty669",
+    storageBucket: "sokolparty669.appspot.com",
+    messagingSenderId: "10124701911",
+    appId: "1:10124701911:web:71e3cc5414e7f700344092",
+    measurementId: "G-PVSB6981TZ"
+};
+
+firebase.initializeApp(firebaseConfig);
+const db = firebase.firestore();
+
 // Upewnij się, że dokument istnieje w Firestore
 const squareRef = db.collection('bingoSquares').doc('current');
 
@@ -35,23 +49,8 @@ function createBoard() {
 
 createBoard();
 
-// Inicjalizacja Firebase
-const firebaseConfig = {
-    apiKey: "AIzaSyCFoWA5SvQ2vqdPU6X5vvCO4nz9CnHUyIk",
-    authDomain: "sokolparty669.firebaseapp.com",
-    projectId: "sokolparty669",
-    storageBucket: "sokolparty669.appspot.com",
-    messagingSenderId: "10124701911",
-    appId: "1:10124701911:web:71e3cc5414e7f700344092",
-    measurementId: "G-PVSB6981TZ"
-};
-
-firebase.initializeApp(firebaseConfig);
-const db = firebase.firestore();
-
 // Zaznaczanie pola w Firestore
 function markSquare(index) {
-    const squareRef = db.collection('bingoSquares').doc('current');
     squareRef.update({ [index]: true }).catch((error) => {
         squareRef.set({ [index]: true }, { merge: true });
     });
