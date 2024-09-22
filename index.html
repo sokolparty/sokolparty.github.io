@@ -70,9 +70,6 @@
 
     <div id="image-gallery"></div>
 
-    <input type="file" id="file-input" accept="image/*">
-    <button id="upload-button">Prześlij zdjęcie</button>
-
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
@@ -152,7 +149,7 @@
                 selectedCell.textContent = newText;
                 updateCellInFirestore(cellNumber, newText, selectedCell.classList.contains('selected'));
             } else {
-                alert('Nieprawidłowy numer pola');
+                alert('Nieprawidłowy numer kwadracika!');
             }
         });
 
@@ -175,16 +172,6 @@
             cells.forEach((cell, index) => {
                 cell.classList.remove('selected');
                 updateCellInFirestore(index, cell.textContent, false);
-            });
-        });
-
-        document.getElementById('upload-button').addEventListener('click', () => {
-            const fileInput = document.getElementById('file-input');
-            const file = fileInput.files[0];
-            const storageRef = storage.ref(`images/${file.name}`);
-
-            storageRef.put(file).then(() => {
-                loadImages();
             });
         });
 
