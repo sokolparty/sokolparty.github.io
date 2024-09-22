@@ -7,14 +7,33 @@ const values = [
 
 const bingoBoard = document.getElementById('bingo-board');
 
+// Upewnij się, że dokument istnieje w Firestore
+const squareRef = db.collection('bingoSquares').doc('current');
+
+squareRef.get().then((doc) => {
+    if (!doc.exists) {
+        // Ustawienie domyślnych wartości w Firestore
+        const initialData = {};
+        for (let i = 0; i < values.length; i++) {
+            initialData[`value${i}`] = values[i];
+        }
+        squareRef.set(initialData);
+    }
+});
+
 // Tworzenie planszy Bingo
-for (let i = 0; i < boardSize * boardSize; i++) {
-    const square = document.createElement('div');
-    square.className = 'square';
-    square.textContent = values[i]; // Wypełnienie kwadratów z wartościami z tablicy
-    square.addEventListener('click', () => markSquare(i));
-    bingoBoard.appendChild(square);
+function createBoard() {
+    bingoBoard.innerHTML = ''; // Wyczyść planszę
+    for (let i = 0; i < boardSize * boardSize; i++) {
+        const square = document.createElement('div');
+        square.className = 'square';
+        square.textContent = values[i]; // Wypełnienie kwadratów z wartościami z tablicy
+        square.addEventListener('click', () => markSquare(i));
+        bingoBoard.appendChild(square);
+    }
 }
+
+createBoard();
 
 // Inicjalizacja Firebase
 const firebaseConfig = {
@@ -50,7 +69,6 @@ db.collection('bingoSquares').doc('current').onSnapshot(doc => {
 
 // Resetowanie planszy
 function resetBingo() {
-    const squareRef = db.collection('bingoSquares').doc('current');
     const resetData = {};
     for (let i = 0; i < 9; i++) {
         resetData[i] = false; // Ustawiamy wszystkie pola na false
@@ -80,17 +98,37 @@ function createInputs() {
         input.type = 'text';
         input.value = values[i]; // Ustaw aktualną wartość
         input.dataset.index = i; // Przechowuj indeks
+        
         input.addEventListener('input', (event) => {
             values[i] = event.target.value; // Zaktualizuj wartość w tablicy
             const square = bingoBoard.children[i];
             square.textContent = values[i]; // Zaktualizuj tekst w kwadracie
+
+            // Aktualizacja wartości w Firestore
+            squareRef.set({ [`value${i}`]: values[i] }, { merge: true });
         });
+        
         inputsContainer.appendChild(input);
     }
 }
 
 // Wywołanie funkcji do tworzenia inputów
 createInputs();
+
+// Nasłuchiwanie aktualizacji wartości z Firestore
+db.collection('bingoSquares').doc('current').onSnapshot(doc => {
+    const data = doc.data();
+    if (data) {
+        for (let i = 0; i < values.length; i++) {
+            if (data[`value${i}`]) {
+                values[i] = data[`value${i}`]; // Ustaw wartość z Firestore
+                const square = bingoBoard.children[i];
+                square.textContent = values[i]; // Zaktualizuj tekst w kwadracie
+            }
+        }
+        createInputs(); // Odśwież inputy, aby pokazać aktualne wartości
+    }
+});
 
 // Resetowanie planszy
 document.getElementById('reset-button').addEventListener('click', resetBingo);
