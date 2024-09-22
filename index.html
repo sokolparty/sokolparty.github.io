@@ -26,6 +26,9 @@
         #developer-menu {
             display: none;
         }
+        .selected {
+            background-color: lightblue;
+        }
     </style>
 </head>
 <body>
@@ -47,6 +50,7 @@
         <h4>Menu developerskie</h4>
         <button id="reset-board">Resetuj planszę</button>
         <!-- Przykład zmiany tekstu kwadratów -->
+        <input type="number" id="cell-number" placeholder="Numer kwadracika (1-9)" min="1" max="9">
         <input type="text" id="cell-text" placeholder="Nowy tekst dla kwadracika">
         <button id="change-text-button">Zmień tekst</button>
     </div>
@@ -97,7 +101,7 @@
         for (let i = 0; i < 9; i++) {
             const cell = document.createElement('div');
             cell.className = 'bingo-cell';
-            cell.textContent = `Pole ${i + 1}`;
+            cell.textContent = `${i + 1}`;  // Zmieniono nazwę kwadratów na "1", "2", itd.
             board.appendChild(cell);
             cells.push(cell);
 
@@ -112,12 +116,15 @@
 
         // Aktualizacja tekstu kwadracika przez menu developerskie
         document.getElementById('change-text-button').addEventListener('click', () => {
+            const cellNumber = parseInt(document.getElementById('cell-number').value) - 1;
             const newText = document.getElementById('cell-text').value;
-            const selectedCell = cells.find(cell => cell.classList.contains('selected'));
-            if (selectedCell) {
+
+            if (cellNumber >= 0 && cellNumber < cells.length) {
+                const selectedCell = cells[cellNumber];
                 selectedCell.textContent = newText;
-                const cellIndex = cells.indexOf(selectedCell);
-                updateCellInFirestore(cellIndex, newText);
+                updateCellInFirestore(cellNumber, newText);
+            } else {
+                alert('Nieprawidłowy numer kwadracika!');
             }
         });
 
@@ -132,8 +139,8 @@
         document.getElementById('reset-board').addEventListener('click', () => {
             cells.forEach((cell, index) => {
                 cell.classList.remove('selected');
-                cell.textContent = `Pole ${index + 1}`;
-                updateCellInFirestore(index, `Pole ${index + 1}`);
+                cell.textContent = `${index + 1}`;  // Resetuje tekst do "1", "2", itd.
+                updateCellInFirestore(index, `${index + 1}`);
             });
         });
     </script>
