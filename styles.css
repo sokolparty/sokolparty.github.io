@@ -1,22 +1,37 @@
+body {
+    font-family: Arial, sans-serif;
+}
+
 #bingo-board {
     display: grid;
-    grid-template-columns: repeat(3, 100px); // 3 kolumny
+    grid-template-columns: repeat(3, 100px);
     gap: 5px;
+    margin: 20px;
 }
 
 .square {
     width: 100px;
     height: 100px;
-    background-color: #f0f0f0;
     display: flex;
-    align-items: center;
     justify-content: center;
+    align-items: center;
+    border: 1px solid #000;
     cursor: pointer;
     font-size: 24px;
-    border: 1px solid #ccc;
 }
 
 .square.marked {
-    background-color: #4caf50;
+    background-color: yellow;
+}
+
+#dev-toggle {
+    background-color: #007bff;
     color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 10px;
+}
+
+#dev-menu {
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
