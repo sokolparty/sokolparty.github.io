@@ -1,6 +1,6 @@
 #bingo-board {
     display: grid;
-    grid-template-columns: repeat(5, 100px);
+    grid-template-columns: repeat(3, 100px); // 3 kolumny
     gap: 5px;
 }
 
