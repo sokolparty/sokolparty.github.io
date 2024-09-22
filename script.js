@@ -9,13 +9,13 @@ const firebaseConfig = {
     measurementId: "G-PVSB6981TZ"
 };
 
-const app = firebase.initializeApp(firebaseConfig);
+firebase.initializeApp(firebaseConfig);
 const db = firebase.firestore();
 
+// Tworzenie planszy Bingo
 const boardSize = 5;
 const bingoBoard = document.getElementById('bingo-board');
 
-// Tworzenie planszy Bingo
 for (let i = 0; i < boardSize * boardSize; i++) {
     const square = document.createElement('div');
     square.className = 'square';
