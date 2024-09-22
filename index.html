@@ -3,52 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Firebase Storage</title>
-    <script type="module">
-        import { initializeApp } from "firebase/app";
-        import { getStorage, ref, uploadBytes, listAll, getDownloadURL } from "firebase/storage";
-
-        const firebaseConfig = {
-            apiKey: "AIzaSyA_P1R1-PGfykAVM_Y9B6Ajz4ckkz1vz9Q",
-            authDomain: "sokolparty420.firebaseapp.com",
-            projectId: "sokolparty420",
-            storageBucket: "sokolparty420.appspot.com",
-            messagingSenderId: "361570196780",
-            appId: "1:361570196780:web:e1e1e419d06d475355e089",
-            measurementId: "G-18TK7X35TQ"
-        };
-
-        const app = initializeApp(firebaseConfig);
-        const storage = getStorage(app);
-
-        async function uploadImage() {
-            const file = document.getElementById('fileInput').files[0];
-            const storageRef = ref(storage, 'uploads/' + file.name);
-            await uploadBytes(storageRef, file);
-            displayImages();
-        }
-
-        async function displayImages() {
-            const gallery = document.getElementById('gallery');
-            gallery.innerHTML = '';
-
-            const listRef = ref(storage, 'uploads/');
-            const res = await listAll(listRef);
-            res.items.forEach(async (itemRef) => {
-                const url = await getDownloadURL(itemRef);
-                const img = document.createElement('img');
-                img.src = url;
-                img.style.width = '200px';
-                img.style.margin = '10px';
-                gallery.appendChild(img);
-            });
-        }
-    </script>
+    <title>Bingo</title>
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <h1>Przesyłanie zdjęć do Firebase Storage</h1>
-    <input type="file" id="fileInput">
-    <button onclick="uploadImage()">Prześlij zdjęcie</button>
-    <div id="gallery"></div>
+    <div id="bingo-board"></div>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js"></script>
+    <script src="script.js"></script>
 </body>
 </html>
