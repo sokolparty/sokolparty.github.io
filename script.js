@@ -106,7 +106,7 @@ function createInputs() {
             // Aktualizacja wartości w Firestore
             squareRef.set({ [`value${i}`]: values[i] }, { merge: true });
         });
-        
+
         inputsContainer.appendChild(input);
     }
 }
@@ -119,13 +119,12 @@ db.collection('bingoSquares').doc('current').onSnapshot(doc => {
     const data = doc.data();
     if (data) {
         for (let i = 0; i < values.length; i++) {
-            if (data[`value${i}`]) {
+            if (data[`value${i}`] && data[`value${i}`] !== values[i]) {
                 values[i] = data[`value${i}`]; // Ustaw wartość z Firestore
                 const square = bingoBoard.children[i];
                 square.textContent = values[i]; // Zaktualizuj tekst w kwadracie
             }
         }
-        createInputs(); // Odśwież inputy, aby pokazać aktualne wartości
     }
 });
 
