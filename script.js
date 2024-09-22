@@ -95,7 +95,7 @@ loginButton.addEventListener('click', () => {
     const username = usernameInput.value;
     const password = passwordInput.value;
 
-    if (username === "Sabek" && password === "kubus2008") {
+    if (username === "Sabek" && password === "yessir") {
         isLoggedIn = true;
         loginForm.style.display = 'none';
         devMenu.style.display = 'block';
