@@ -5,11 +5,17 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>BINGO</title>
     <style>
+        body {
+            display: flex;
+            flex-direction: row;
+            align-items: flex-start;
+        }
         #bingo-board {
             display: grid;
             grid-template-columns: repeat(3, 100px);
             grid-template-rows: repeat(3, 100px);
             gap: 5px;
+            margin-right: 20px;
         }
         .bingo-cell {
             display: flex;
@@ -31,13 +37,13 @@
         }
         #image-gallery {
             display: flex;
-            flex-wrap: wrap;
+            flex-direction: column;
             margin-top: 20px;
         }
         .image-item {
-            width: 100px;
-            height: 100px;
-            margin: 5px;
+            width: 300px;
+            height: auto;
+            margin-bottom: 10px;
             overflow: hidden;
             border: 1px solid black;
         }
