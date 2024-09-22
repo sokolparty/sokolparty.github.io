@@ -13,7 +13,7 @@ firebase.initializeApp(firebaseConfig);
 const db = firebase.firestore();
 
 // Tworzenie planszy Bingo
-const boardSize = 5;
+const boardSize = 3; // Zmiana na 3x3
 const bingoBoard = document.getElementById('bingo-board');
 
 for (let i = 0; i < boardSize * boardSize; i++) {
