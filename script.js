@@ -15,7 +15,7 @@ const db = firebase.firestore();
 const boardSize = 3; // Zmiana na 3x3
 const values = [
     "ale się najebałem", "idziemy na szluga?", "chodźmy na plac", 
-    "4", "5", "wyłączcie to gówno", 
+    "4", "chce mi się ruchać", "wyłączcie to gówno", 
     "7", "8", "9"
 ];
 
