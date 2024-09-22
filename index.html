@@ -179,27 +179,23 @@
             const imageGallery = document.getElementById('image-gallery');
             imageGallery.innerHTML = '';
 
-function loadImages() {
-    const imageGallery = document.getElementById('image-gallery');
-    imageGallery.innerHTML = '';
-
-    storage.ref('images/').listAll().then(result => {
-        result.items.forEach(imageRef => {
-            imageRef.getDownloadURL().then(url => {
-                const imgDiv = document.createElement('div');
-                imgDiv.className = 'image-item';
-                const img = document.createElement('img');
-                img.src = url;
-                imgDiv.appendChild(img);
-                imageGallery.appendChild(imgDiv);
+            storage.ref('images/').listAll().then(result => {
+                result.items.forEach(imageRef => {
+                    imageRef.getDownloadURL().then(url => {
+                        const imgDiv = document.createElement('div');
+                        imgDiv.className = 'image-item';
+                        const img = document.createElement('img');
+                        img.src = url;
+                        imgDiv.appendChild(img);
+                        imageGallery.appendChild(imgDiv);
+                    }).catch(error => {
+                        console.error('Error getting image URL:', error);
+                    });
+                });
             }).catch(error => {
-                console.error('Error getting image URL:', error);
+                console.error('Error listing images:', error);
             });
-        });
-    }).catch(error => {
-        console.error('Error listing images:', error);
-    });
-}
+        }
     </script>
 </body>
 </html>
