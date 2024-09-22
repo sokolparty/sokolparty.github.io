@@ -6,6 +6,16 @@ const values = [
 ];
 
 const bingoBoard = document.getElementById('bingo-board');
+const loginForm = document.getElementById('login-form');
+const devToggle = document.getElementById('dev-toggle');
+const devMenu = document.getElementById('dev-menu');
+const inputsContainer = document.getElementById('inputs-container');
+const loginButton = document.getElementById('login-button');
+const usernameInput = document.getElementById('username');
+const passwordInput = document.getElementById('password');
+const loginMessage = document.getElementById('login-message');
+
+let isLoggedIn = false;
 
 // Inicjalizacja Firebase
 const firebaseConfig = {
@@ -80,13 +90,27 @@ function resetBingo() {
     });
 }
 
-// Znaczek developerski
-const devToggle = document.getElementById('dev-toggle');
-const devMenu = document.getElementById('dev-menu');
-const inputsContainer = document.getElementById('inputs-container');
+// Logika logowania
+loginButton.addEventListener('click', () => {
+    const username = usernameInput.value;
+    const password = passwordInput.value;
 
+    if (username === "Sabek" && password === "kubus2008") {
+        isLoggedIn = true;
+        loginForm.style.display = 'none';
+        devMenu.style.display = 'block';
+    } else {
+        loginMessage.textContent = "Niepoprawna nazwa użytkownika lub hasło.";
+    }
+});
+
+// Znaczek developerski
 devToggle.addEventListener('click', () => {
-    devMenu.style.display = devMenu.style.display === 'none' ? 'block' : 'none';
+    if (isLoggedIn) {
+        devMenu.style.display = devMenu.style.display === 'none' ? 'block' : 'none';
+    } else {
+        loginForm.style.display = 'block';
+    }
 });
 
 // Funkcja do tworzenia inputów do zmiany tekstu w kwadratach
