@@ -29,6 +29,22 @@
         .selected {
             background-color: lightblue;
         }
+        #image-gallery {
+            display: flex;
+            flex-wrap: wrap;
+            margin-top: 20px;
+        }
+        .image-item {
+            width: 100px;
+            height: 100px;
+            margin: 5px;
+            overflow: hidden;
+            border: 1px solid black;
+        }
+        .image-item img {
+            width: 100%;
+            height: auto;
+        }
     </style>
 </head>
 <body>
@@ -52,9 +68,15 @@
         <button id="change-text-button">Zmień tekst</button>
     </div>
 
+    <div id="image-gallery"></div>
+
+    <input type="file" id="file-input" accept="image/*">
+    <button id="upload-button">Prześlij zdjęcie</button>
+
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-storage.js"></script>
 
     <script>
         const firebaseConfig = {
@@ -71,6 +93,7 @@
 
         const auth = firebase.auth();
         const db = firebase.firestore();
+        const storage = firebase.storage();
 
         document.getElementById('login-button').addEventListener('click', () => {
             const email = document.getElementById('email').value;
@@ -80,6 +103,7 @@
                 .then(userCredential => {
                     document.getElementById('login-form').style.display = 'none';
                     document.getElementById('developer-menu').style.display = 'block';
+                    loadImages();
                 })
                 .catch(error => {
                     document.getElementById('login-message').textContent = 'Nieprawidłowe dane logowania';
@@ -128,7 +152,7 @@
                 selectedCell.textContent = newText;
                 updateCellInFirestore(cellNumber, newText, selectedCell.classList.contains('selected'));
             } else {
-                alert('Nieprawidłowy numer kwadracika!');
+                alert('Nieprawidłowy numer pola');
             }
         });
 
@@ -153,6 +177,34 @@
                 updateCellInFirestore(index, cell.textContent, false);
             });
         });
+
+        document.getElementById('upload-button').addEventListener('click', () => {
+            const fileInput = document.getElementById('file-input');
+            const file = fileInput.files[0];
+            const storageRef = storage.ref(`images/${file.name}`);
+
+            storageRef.put(file).then(() => {
+                loadImages();
+            });
+        });
+
+        function loadImages() {
+            const imageGallery = document.getElementById('image-gallery');
+            imageGallery.innerHTML = '';
+
+            storage.ref('images/').listAll().then(result => {
+                result.items.forEach(imageRef => {
+                    imageRef.getDownloadURL().then(url => {
+                        const imgDiv = document.createElement('div');
+                        imgDiv.className = 'image-item';
+                        const img = document.createElement('img');
+                        img.src = url;
+                        imgDiv.appendChild(img);
+                        imageGallery.appendChild(imgDiv);
+                    });
+                });
+            });
+        }
     </script>
 </body>
 </html>
