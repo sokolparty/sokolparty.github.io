@@ -3,36 +3,139 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bingo</title>
-    <link rel="stylesheet" href="styles.css">
+    <title>Bingo z logowaniem</title>
+    <style>
+        #bingo-board {
+            display: grid;
+            grid-template-columns: repeat(3, 100px);
+            grid-template-rows: repeat(3, 100px);
+            gap: 5px;
+        }
+        .bingo-cell {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100px;
+            height: 100px;
+            border: 1px solid black;
+            cursor: pointer;
+        }
+        #login-form {
+            display: block;
+        }
+        #developer-menu {
+            display: none;
+        }
+    </style>
 </head>
 <body>
+
+    <!-- Plansza Bingo -->
     <div id="bingo-board"></div>
-    
+
     <!-- Formularz logowania -->
-    <div id="login-form" style="display: none;">
+    <div id="login-form">
         <h4>Logowanie</h4>
-        <input type="text" id="username" placeholder="Nazwa użytkownika">
+        <input type="email" id="email" placeholder="Email">
         <input type="password" id="password" placeholder="Hasło">
         <button id="login-button">Zaloguj</button>
         <p id="login-message" style="color: red;"></p>
     </div>
 
-    <!-- Znaczek developerski -->
-    <div id="dev-toggle" style="position: fixed; bottom: 20px; right: 20px; cursor: pointer; background-color: #ccc; padding: 10px; border-radius: 5px;">Dev</div>
-
     <!-- Menu developerskie -->
-    <div id="dev-menu" style="display: none; position: fixed; bottom: 60px; right: 20px; background-color: white; border: 1px solid #ccc; padding: 10px; border-radius: 5px;">
-        <h4>Menu Developerskie</h4>
-        <div id="inputs-container"></div>
-        <button id="reset-button">Resetuj Bingo</button>
+    <div id="developer-menu">
+        <h4>Menu developerskie</h4>
+        <button id="reset-board">Resetuj planszę</button>
+        <!-- Przykład zmiany tekstu kwadratów -->
+        <input type="text" id="cell-text" placeholder="Nowy tekst dla kwadracika">
+        <button id="change-text-button">Zmień tekst</button>
     </div>
 
-    <!-- Firebase SDK -->
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
-    
-    <!-- Twój skrypt -->
-    <script src="script.js"></script>
+
+    <script>
+        const firebaseConfig = {
+            apiKey: "AIzaSyCFoWA5SvQ2vqdPU6X5vvCO4nz9CnHUyIk",
+            authDomain: "sokolparty669.firebaseapp.com",
+            projectId: "sokolparty669",
+            storageBucket: "sokolparty669.appspot.com",
+            messagingSenderId: "10124701911",
+            appId: "1:10124701911:web:71e3cc5414e7f700344092",
+            measurementId: "G-PVSB6981TZ"
+        };
+
+        // Inicjalizacja Firebase
+        firebase.initializeApp(firebaseConfig);
+
+        const auth = firebase.auth();
+        const db = firebase.firestore();
+
+        // Logowanie
+        document.getElementById('login-button').addEventListener('click', () => {
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+
+            auth.signInWithEmailAndPassword(email, password)
+                .then(userCredential => {
+                    console.log('Zalogowano pomyślnie:', userCredential.user);
+                    // Ukryj formularz logowania i pokaż menu developerskie
+                    document.getElementById('login-form').style.display = 'none';
+                    document.getElementById('developer-menu').style.display = 'block';
+                })
+                .catch(error => {
+                    console.error('Błąd logowania:', error);
+                    document.getElementById('login-message').textContent = 'Nieprawidłowe dane logowania';
+                });
+        });
+
+        // Tworzenie planszy Bingo
+        const board = document.getElementById('bingo-board');
+        const cells = [];
+
+        for (let i = 0; i < 9; i++) {
+            const cell = document.createElement('div');
+            cell.className = 'bingo-cell';
+            cell.textContent = `Pole ${i + 1}`;
+            board.appendChild(cell);
+            cells.push(cell);
+
+            // Zaznaczanie pola
+            cell.addEventListener('click', () => {
+                if (!cell.classList.contains('selected')) {
+                    cell.classList.add('selected');
+                    updateCellInFirestore(i, cell.textContent);
+                }
+            });
+        }
+
+        // Aktualizacja tekstu kwadracika przez menu developerskie
+        document.getElementById('change-text-button').addEventListener('click', () => {
+            const newText = document.getElementById('cell-text').value;
+            const selectedCell = cells.find(cell => cell.classList.contains('selected'));
+            if (selectedCell) {
+                selectedCell.textContent = newText;
+                const cellIndex = cells.indexOf(selectedCell);
+                updateCellInFirestore(cellIndex, newText);
+            }
+        });
+
+        // Funkcja do aktualizowania pola w Firestore
+        function updateCellInFirestore(index, text) {
+            db.collection('bingo').doc(`cell-${index}`).set({
+                text: text
+            });
+        }
+
+        // Funkcja resetowania planszy
+        document.getElementById('reset-board').addEventListener('click', () => {
+            cells.forEach((cell, index) => {
+                cell.classList.remove('selected');
+                cell.textContent = `Pole ${index + 1}`;
+                updateCellInFirestore(index, `Pole ${index + 1}`);
+            });
+        });
+    </script>
 </body>
 </html>
