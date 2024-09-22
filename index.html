@@ -46,6 +46,7 @@
     <div id="developer-menu">
         <h4>Menu developerskie</h4>
         <button id="reset-board">Resetuj planszę</button>
+        <button id="reset-selections">Resetuj zaznaczenia</button>
         <input type="number" id="cell-number" placeholder="Numer kwadracika (1-9)" min="1" max="9">
         <input type="text" id="cell-text" placeholder="Nowy tekst dla kwadracika">
         <button id="change-text-button">Zmień tekst</button>
@@ -143,6 +144,13 @@
                 cell.classList.remove('selected');
                 cell.textContent = `${index + 1}`;
                 updateCellInFirestore(index, `${index + 1}`, false);
+            });
+        });
+
+        document.getElementById('reset-selections').addEventListener('click', () => {
+            cells.forEach((cell, index) => {
+                cell.classList.remove('selected');
+                updateCellInFirestore(index, cell.textContent, false);
             });
         });
     </script>
