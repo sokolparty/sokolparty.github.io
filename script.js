@@ -27,15 +27,22 @@ for (let i = 0; i < boardSize * boardSize; i++) {
 // Zaznaczanie pola w Firestore
 function markSquare(index) {
     const squareRef = db.collection('bingoSquares').doc('current');
-    squareRef.set({ [index]: true }, { merge: true });
+    
+    // Użycie opcji update, aby zaktualizować tylko jedno pole, bez nadpisywania innych
+    squareRef.update({ [index]: true }).catch((error) => {
+        // Jeśli dokument nie istnieje, użyj set
+        squareRef.set({ [index]: true }, { merge: true });
+    });
 }
+
 
 // Nasłuchiwanie aktualizacji pól
 db.collection('bingoSquares').doc('current').onSnapshot(doc => {
     const data = doc.data();
     if (data) {
         Array.from(bingoBoard.children).forEach((square, index) => {
-            square.classList.toggle('marked', data[index]);
+            square.classList.toggle('marked', data[index] === true);
         });
     }
 });
+
