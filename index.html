@@ -7,15 +7,15 @@
     <style>
         body {
             display: flex;
-            flex-direction: row;
-            align-items: flex-start;
+            flex-direction: column;
+            align-items: center;
         }
         #bingo-board {
             display: grid;
             grid-template-columns: repeat(3, 100px);
             grid-template-rows: repeat(3, 100px);
             gap: 5px;
-            margin-right: 20px;
+            margin-bottom: 20px;
         }
         .bingo-cell {
             display: flex;
@@ -39,7 +39,7 @@
             margin-top: 20px;
         }
         .image-item {
-            width: 300px;
+            width: 600px; /* Zmienione na większy rozmiar */
             height: auto;
             margin-bottom: 10px;
             overflow: hidden;
@@ -54,7 +54,6 @@
 <body>
 
     <div id="bingo-board"></div>
-    <div id="image-gallery"></div>
 
     <div id="login-form">
         <h4>Dev Menu</h4>
@@ -72,6 +71,8 @@
         <input type="text" id="cell-text" placeholder="Nowy tekst dla kwadracika">
         <button id="change-text-button">Zmień tekst</button>
     </div>
+
+    <div id="image-gallery"></div>
 
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
