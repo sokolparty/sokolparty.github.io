@@ -9,11 +9,21 @@
 <body>
     <div id="bingo-board"></div>
     
+    <!-- Znaczek developerski -->
+    <div id="dev-toggle" style="position: fixed; bottom: 20px; right: 20px; cursor: pointer; background-color: #ccc; padding: 10px; border-radius: 5px;">Dev</div>
+
+    <!-- Menu developerskie -->
+    <div id="dev-menu" style="display: none; position: fixed; bottom: 60px; right: 20px; background-color: white; border: 1px solid #ccc; padding: 10px; border-radius: 5px;">
+        <h4>Menu Developerskie</h4>
+        <div id="inputs-container"></div>
+        <button id="reset-button">Resetuj Bingo</button>
+    </div>
+
     <!-- Firebase SDK -->
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
     
-    <!-- Twoje skrypty -->
+    <!-- Twój skrypt -->
     <script src="script.js"></script>
 </body>
 </html>
