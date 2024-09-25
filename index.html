@@ -39,7 +39,7 @@
             margin-top: 20px;
         }
         .image-item {
-            width: 600px;
+            width: 600px; /* Zmienione na większy rozmiar */
             height: auto;
             margin-bottom: 10px;
             overflow: hidden;
@@ -47,13 +47,6 @@
         }
         .image-item img {
             width: 100%;
-            height: auto;
-        }
-        #video-section {
-            margin-top: 20px;
-        }
-        video {
-            width: 600px;
             height: auto;
         }
     </style>
@@ -80,12 +73,6 @@
     </div>
 
     <div id="image-gallery"></div>
-
-    <div id="video-section">
-        <h4>Pobieralny film</h4>
-        <video id="video" controls></video>
-        <a id="download-link" href="#" download>Pobierz film</a>
-    </div>
 
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
@@ -213,20 +200,7 @@
             });
         }
 
-        function loadVideo() {
-            const videoElement = document.getElementById('video');
-            const downloadLink = document.getElementById('download-link');
-
-            storage.ref('videos/sample-video.mp4').getDownloadURL().then(url => {
-                videoElement.src = url;
-                downloadLink.href = url;
-            }).catch(error => {
-                console.error('Error getting video URL:', error);
-            });
-        }
-
         loadImages();
-        loadVideo();
     </script>
 </body>
 </html>
